@@ -23,6 +23,7 @@ library(vegan)
 # ---------------------------- UNZIP FILES ------------------------------
 
 # unzip the main file: 2022Release_Nor.zip / Environment 
+# downloadable from: https://drive.google.com/drive/folders/1HJ-QKm95RALnsqqGJZJo9WAxAD1Eoao4?usp=drive_link
 unzip('NABB_data.zip')
 
 # unzip the occurrence data 
@@ -185,7 +186,7 @@ r_bath_NA <- r_bath %>% raster::reclassify(.,c(-Inf,0,NA))
 # from: https://gis.stackexchange.com/questions/260013/vector-gradient-of-a-raster-image-in-r
 r_grad <- sqrt( (r_bath_NA %>% raster::focal(.,matrix(c(-1/2,0,1/2),nrow=3)) )^2 +  (r_bath_NA %>% raster::focal(.,matrix(c(-1/2,0,1/2),ncol=3)) )^2)
 # crop forest layer to contiguous USA
-# definition of USA_t -> line 90
+# definition USA_t -> line 91
 r_fore_crop <- raster::mask(r_fore,as(USA_t,'Spatial'))
 
 # initialise the environmental containers for the simulation grid
@@ -195,7 +196,7 @@ grad_vector <- rep(NULL,length(r_poly[[1]]))
 fore_vector <- rep(NULL,length(r_poly[[1]]))
 
 # for each raster cell
-# definition of r_poly -> line 114
+# definition r_poly -> line 115
 for(i in 1:length(r_poly[[1]])){
 	print(paste0('cell ',i,' of ',length(r_poly[[1]])))
 	# TEMPERATURE
@@ -263,7 +264,7 @@ r_df_out$grad[is.na(r_df_out$land_perc)] <- NA
 r_df_out$fore[is.na(r_df_out$land_perc)] <- NA
 
 # plot the environmental variables on the simulation grid
-# definition USA_t -> line 90
+# definition USA_t -> line 91
 # TEMPERATURE
 p <- ggplot() + geom_sf(data=USA_t) + geom_tile(data=r_df_out,aes(x=x,y=y,fill=temp),color='black') + theme_bw() +
 		scale_fill_viridis_c(option='magma',na.value=rgb(1,1,1,0),alpha=0.65,name='temperature (°C)') +
@@ -419,7 +420,7 @@ for(file in files){
 			dplyr::summarise(SpeciesTotal=sum(SpeciesTotal),CountryNum=median(CountryNum),StateNum=median(StateNum))
 
 	# link routeID to longitude and latitude in routes dataframe;
-	# definition of routes -> line 43
+	# definition routes -> line 44
 	dat_lonlat <- dat %>% dplyr::inner_join(.,routes %>% dplyr::select(c(Longitude,Latitude,routeID)))
 	dat_lonlat_2021 <- dat_2021 %>% dplyr::inner_join(.,routes %>% dplyr::select(c(Longitude,Latitude,routeID)))
 	# add to final container 
@@ -475,7 +476,7 @@ dat_routes_plot <- cbind(dat_routes %>% sf::st_as_sf(.,coords=c('Longitude','Lat
 							sf::st_coordinates() %>% as.data.frame() %>% dplyr::rename(x=X,y=Y) , 
 						dat_routes_div %>% dplyr::select(c(diversity)))
 
-# definition USA_t -> line 90
+# definition USA_t -> line 91
 p <- ggplot() + geom_sf(data=USA_t) + geom_point(data=dat_routes_plot,aes(x=x,y=y,col=diversity),size=0.75) + theme_bw() +
 	scale_colour_viridis_c(option='magma') +
 	ggspatial::annotation_north_arrow(location = "tr",which_north = "true", pad_x = unit(2, "cm"), pad_y = unit(0.2, "cm"),
@@ -503,7 +504,7 @@ dat_routes_PASS_plot <- cbind(dat_routes_PASS %>% sf::st_as_sf(.,coords=c('Longi
 							sf::st_coordinates() %>% as.data.frame() %>% dplyr::rename(x=X,y=Y) , 
 						dat_routes_PASS_div %>% dplyr::select(c(diversity)))
 
-# definition USA_t -> line 90
+# definition USA_t -> line 91
 p <- ggplot() + geom_sf(data=USA_t) + geom_point(data=dat_routes_PASS_plot,aes(x=x,y=y,col=diversity),size=0.75) + theme_bw() +
 	scale_colour_viridis_c(option='magma') +
 	ggspatial::annotation_north_arrow(location = "tr",which_north = "true", pad_x = unit(2, "cm"), pad_y = unit(0.2, "cm"),
@@ -529,10 +530,10 @@ dat_points <- dat_routes %>% sf::st_as_sf(.,coords=c('Longitude','Latitude'),crs
 					sf::st_transform(crs=5070)
 
 # initialise output container for diversity and composition for simulation grid
-# definition r_poly -> line 114
+# definition r_poly -> line 115
 dat_grid_div <- matrix(nrow=0,ncol=ncol(dat_routes)) %>% as.data.frame()
 # subset for Passeriformes and do the same calculations
-# definition AOU_pass -> line 491
+# definition AOU_pass -> line 492
 dat_grid_PASS_div <- matrix(nrow=0,ncol=length(AOU_pass)+2) %>% as.data.frame()
 
 # for each grid cell
@@ -542,7 +543,7 @@ for(i in 1:length(r_poly[[1]])){
 				colSums()
 	inter <- inter %>% as.data.frame() %>% t()
 	# get cell coordinates
-	# definition xy -> line 111
+	# definition xy -> line 112
 	inter <- cbind(xy[i,],inter)
 	rownames(inter) <- i
 	dat_grid_div <- rbind(dat_grid_div,inter)
@@ -570,7 +571,7 @@ write.csv(dat_grid_div,'NABB_grid_div.csv')
 write.csv(dat_grid_PASS_div,'NABB_grid_PASS_div.csv')
 
 # plot the empircal diversity
-# definition USA_t -> line 90
+# definition USA_t -> line 91
 p <- ggplot() + geom_sf(data=USA_t) + geom_tile(data=dat_grid_div,aes(x=x,y=y,fill=diversity),color='black') + theme_bw() +
 		scale_fill_viridis_c(option='magma',na.value=rgb(1,1,1,0),alpha=0.65,name='diversity') +
 		ggspatial::annotation_north_arrow(location = "tr",which_north = "true", pad_x = unit(2.4, "cm"), pad_y = unit(0.2, "cm"),
@@ -599,8 +600,8 @@ p <- ggplot() + geom_sf(data=USA_t) + geom_tile(data=dat_grid_PASS_div,aes(x=x,y
 # read environmental grid and add diversity
 dat_env_div <- read.csv('NABB_grid_env.csv',header=TRUE,row.names=1) %>% 
 				dplyr::select(c(x,y,land_perc,temp,prec,grad,fore)) %>%
-				dplyr::mutate(diversity=read.csv('NABB_grid_div.csv',header=TRUE,row.names=1) %>% pull(diversity),
-								diversity_PASS=read.csv('NABB_grid_PASS_div.csv',header=TRUE,row.names=1) %>% pull(diversity))
+				dplyr::mutate(diversity=read.csv('NABB_grid_div.csv',header=TRUE,row.names=1) %>% dplyr::pull(diversity),
+								diversity_PASS=read.csv('NABB_grid_PASS_div.csv',header=TRUE,row.names=1) %>% dplyr::pull(diversity))
 
 # to eliminate edge effects, only consider cells with more than 20% land cover
 # if necessary, also discard cells with no count data
@@ -737,7 +738,7 @@ dat_env_div_sim$lower_left[dat_env_div_sim$active == 0] <- 0
 dat_env_div_sim$lower_right[dat_env_div_sim$active == 0] <- 0
 
 # plot these geometries
-# definition USA_t -> line 90
+# definition USA_t -> line 91
 p <- ggplot() + geom_sf(data=USA_t) + geom_tile(data=dat_env_div_sim,aes(x=x,y=y,fill=factor(active)),color='black') + theme_bw() +
 		scale_fill_viridis_d(option='magma',na.value=rgb(1,1,1,0),alpha=0.65,name='active') +
 		ggspatial::annotation_north_arrow(location = "tr",which_north = "true", pad_x = unit(2.4, "cm"), pad_y = unit(0.2, "cm"),

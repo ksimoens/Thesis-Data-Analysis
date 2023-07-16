@@ -24,7 +24,8 @@ Read comments in the code to avoid problems with memory usage.
 
 ### NABB_data.zip
 
-zip-file with all the downloaded data on environment and diversity.  
+zip-file with all the downloaded data on environment and diversity.   
+Downloadable from: https://drive.google.com/drive/folders/1HJ-QKm95RALnsqqGJZJo9WAxAD1Eoao4?usp=drive_link   
 The file is unzipped automatically in **NABB_extractData.R**.  
 Therefore, **NABB_extractData.R** has to be placed in the same directory as the zip-file.  
 The entire data manipulation only requires **NABB_extractData.R** and the zip-file.  
@@ -251,8 +252,8 @@ Coordinate system: NAD83 Conus Albers
 - **land_perc**: fraction of the grid cell surface area covered by land  
 NA-value = land fraction smaller than 0.2
 
-- **temp**: normalised mean temperature value in the grid cell  
-min = 1   
+- **temp**: mean temperature value in the grid cell  
+Units: Kelvin (K)  
 NA-value = land fraction smaller than 0.2
 
 - **prec**: normalised mean precipitation value in the grid cell  
