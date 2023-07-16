@@ -186,6 +186,26 @@ This number is only indicative and cannot be used as a real abundance.
 
 ---
 
+### CPR_samples_div.csv
+
+The diversity matrix for the individual samples.  
+The csv file is generated in **CPR_extractData.R**.  
+The columns are:
+
+- **x**: longitudinal coordinate of the sample  
+Coordinate system: Lambert Conformal Conic as defined in **CPR_extractData.R**.
+
+- **y**: latitudinal coordinate of the sample  
+Coordinate system: Lambert Conformal Conic as defined in **CPR_extractData.R**.
+
+- **#key#**:  
+All remaining columns represent a unique species.  
+Column names are the unique GBIF identifiers for the species.  
+Values are the total number of entries of a particular species found in a particular sample.  
+This number is only indicative and cannot be used as a real abundance. 
+
+---
+
 ### CPR_grid_env_div_sim.csv
 
 Final CPR simulation grid that is used in the simulation of the Mechanistic Model.  

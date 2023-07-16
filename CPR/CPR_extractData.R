@@ -324,6 +324,9 @@ dat_samples_div_sub <- points %>% sf::st_drop_geometry()
 dat_samples_div_sub <- dat_samples_div_sub[,colSums(dat_samples_div_sub)!=0]
 points_sub <- cbind(xy,dat_samples_div_sub) %>% sf::st_as_sf(coords=c('x','y'),crs=crs_atl)
 
+# write out diversity matrix for samples
+write.csv(cbind(xy,dat_samples_div_sub),'CPR_samples_div.csv')
+
 # initialise output container for diversity and composition for simulation grid
 # definition r_poly -> line 124
 df_spec_out <- matrix(nrow=0,ncol=length(names(dat_samples_div_sub))) %>% as.data.frame()
